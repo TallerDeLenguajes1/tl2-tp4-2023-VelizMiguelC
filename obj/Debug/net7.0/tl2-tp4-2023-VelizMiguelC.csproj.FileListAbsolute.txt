@@ -31,3 +31,5 @@
 /Users/miguelvelizc/TallerDeLenguajes2/tl2-tp4-2023-VelizMiguelC/obj/Debug/net7.0/tl2-tp4-2023-VelizMiguelC.pdb
 /Users/miguelvelizc/TallerDeLenguajes2/tl2-tp4-2023-VelizMiguelC/obj/Debug/net7.0/tl2-tp4-2023-VelizMiguelC.genruntimeconfig.cache
 /Users/miguelvelizc/TallerDeLenguajes2/tl2-tp4-2023-VelizMiguelC/obj/Debug/net7.0/ref/tl2-tp4-2023-VelizMiguelC.dll
+/Users/miguelvelizc/TallerDeLenguajes2/tl2-tp4-2023-VelizMiguelC/bin/Debug/net7.0/Cadeteria.json
+/Users/miguelvelizc/TallerDeLenguajes2/tl2-tp4-2023-VelizMiguelC/bin/Debug/net7.0/Cadetes.json
