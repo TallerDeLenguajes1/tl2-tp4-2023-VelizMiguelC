@@ -27,4 +27,20 @@ public class Pedido{
     public void CancelarPedido(){
         Estado = Estado.Cancelado;
     }
+    public void PedidoSinEntregar(){
+        Estado = Estado.SinEntregar;
+    }
+    public void CambiarEstadoPedido(int op){
+        switch (op)
+        {
+            case 1:EntregarPedido();
+            break;
+            case 2:CancelarPedido();
+            break;
+            case 3:PedidoSinEntregar();
+            break;
+            default:
+            break;
+        }
+    }
 }

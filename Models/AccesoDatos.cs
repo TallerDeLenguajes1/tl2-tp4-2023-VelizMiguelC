@@ -6,7 +6,7 @@ using tl2_tp4_2023_VelizMiguelC;
 
 namespace EspacioDeArchivos
 {
-    public abstract class AccesoADatos{
+    public abstract class AccesoADatos{ 
         public abstract bool Existe(string Nombre);
         public abstract Cadeteria LeerCadeteria();
         public abstract List<Cadete> LeerCadetes();
@@ -55,12 +55,12 @@ namespace EspacioDeArchivos
     public class AccesoJSON : AccesoADatos
     {
         public override bool Existe(string nombre){
-            return File.Exists(nombre+".json") ||File.Exists(nombre+".txt");
+            return File.Exists(nombre+".json") || File.Exists(nombre+".txt");
         }
         public override Cadeteria LeerCadeteria()
         {
             Cadeteria cadeteria = null;
-            if(Existe("Cadeteria.json")){
+            if(Existe("Cadeteria")){
                 string json = File.ReadAllText("Cadeteria.json");
                 cadeteria = JsonSerializer.Deserialize<Cadeteria>(json);
             }else
@@ -70,7 +70,7 @@ namespace EspacioDeArchivos
             return cadeteria;
         }
         public override List<Cadete> LeerCadetes(){
-        if (Existe("Cadetes.json")){
+        if (Existe("Cadetes")){
             string json = File.ReadAllText("Cadetes.json");
             return JsonSerializer.Deserialize<List<Cadete>>(json);
         } else {

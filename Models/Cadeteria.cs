@@ -35,7 +35,6 @@ public class Cadeteria{
             // Crear la instancia Cadeteria si aún no existe.
             if (instance == null)
             {
-                instance = new Cadeteria();
                 var json = new AccesoJSON();
                 instance = json.LeerCadeteria();
                 instance.cadetes = json.LeerCadetes();
@@ -64,14 +63,22 @@ public class Cadeteria{
         Pedidos.Add(pedido);
         return pedido;
     }
-    public void AsignarPedido(int id,Pedido ped){
-        ped.IdCadete=id;
+    public Pedido AsignarPedido(int idPedido,int idCadete){
+        var ped = ObtenerPedido(idPedido);
+        var cad= ObtenerCadete(idCadete);
+        if (ped != null && cad != null)
+        {
+            ped.IdCadete=idCadete;
+        }
+        return ped;
     }
-    public void MoverPedido(int NumeroPedido,int id){
+    public bool MoverPedido(int NumeroPedido,int id){
         var Pedido = Pedidos.FirstOrDefault(p=>p.Numero == NumeroPedido);
         if(Pedido != null){
             Pedido.IdCadete=id;
+            return true;
         }
+        return false;
     }
     public float PedPromedioCad(){
         return Pedidos.Count()/Cadetes.Count();
@@ -91,5 +98,22 @@ public class Cadeteria{
             return cad.JornalACobrar(pedidos);
         }
         return 0;
+    }
+    public Pedido ObtenerPedido(int idPedido){
+        var ped = Pedidos.FirstOrDefault(p => p.Numero == idPedido);
+        return ped;
+    }
+    public Cadete ObtenerCadete(int idCadete){
+        var cad = Cadetes.FirstOrDefault(c=>c.Id==idCadete);
+        return cad;
+    }
+    public bool CambiarEstadoPedido(int idPedido,int Op){
+        var ped = ObtenerPedido(idPedido);
+        if (ped != null)
+        {
+            ped.CambiarEstadoPedido(Op);
+            return true;
+        }
+        return false;
     }
 }
