@@ -64,7 +64,7 @@ public class Cadeteria{
         }
         return ped;
     }
-    public bool MoverPedido(int NumeroPed           ido,int id){
+    public bool MoverPedido(int NumeroPedido,int id){
         var Pedidos = accesoADatosPedidos.Obetener();
         var Pedido = Pedidos.FirstOrDefault(p=>p.Numero == NumeroPedido);
         if(Pedido != null){
