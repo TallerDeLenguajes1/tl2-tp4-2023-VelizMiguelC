@@ -61,6 +61,13 @@ public class Cadeteria{
         accesoADatosPedidos.GuardarPedido(pedidos);
         return pedido;
     }
+    public Cadete addCadete(int id, string nombre, string direccion, long telefono){
+        var cadete = new Cadete(id,nombre,direccion,telefono);
+        var Cadetes = accesoADatosCadetes.Obetener();
+        Cadetes.Add(cadete);
+        accesoADatosCadetes.GuardarCadete(Cadetes);
+        return cadete;
+    }
     public Pedido AsignarPedido(int idPedido,int idCadete){
         var pedidos = accesoADatosPedidos.Obetener();
         var ped = pedidos.FirstOrDefault(p => p.Numero == idPedido);

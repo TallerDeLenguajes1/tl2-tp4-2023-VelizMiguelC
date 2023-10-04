@@ -15,6 +15,7 @@ public class CadeteriaController : ControllerBase
         _logger = logger;
         cadeteria = Cadeteria.Instance;
     }
+
     [HttpGet]
     public ActionResult <string> GetCadeteria(){
         return Ok(cadeteria);
@@ -30,8 +31,17 @@ public class CadeteriaController : ControllerBase
         return Ok(cadeteria.GetCadetes());
     }
     [HttpGet]
+    [Route("PedidosPorID")]
+    public ActionResult <string> GetPedidos(int idPedido){
+        return Ok(cadeteria.ObtenerPedido(idPedido));
+    }
+    [HttpGet]
+    [Route("CadetesPorID")]
+    public ActionResult <string> GetCadetes(int idCadete){
+        return Ok(cadeteria.ObtenerCadete(idCadete));
+    }
+    [HttpGet]
     [Route("Informe")]
-
     public ActionResult <string> GetInforme(){
         var informe =new Informe(cadeteria.GetCadetes(),cadeteria.GetPedidos());
         return Ok(informe);
@@ -42,6 +52,15 @@ public class CadeteriaController : ControllerBase
         if (ped != null)
         {
             return Accepted(ped);
+        }
+        return StatusCode(500,"No se pudo tomar pedido");
+    }
+    [HttpPost("addCadete")]
+    public ActionResult <string> addCadete(int id, string nombre, string direccion, long telefono){
+        var cad = cadeteria.addCadete(id,nombre,direccion,telefono);
+        if (cad != null)
+        {
+            return Accepted(cad);
         }
         return StatusCode(500,"No se pudo tomar pedido");
     }
