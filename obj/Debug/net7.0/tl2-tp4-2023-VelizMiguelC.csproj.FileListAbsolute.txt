@@ -33,4 +33,4 @@
 /Users/miguelvelizc/TallerDeLenguajes2/tl2-tp4-2023-VelizMiguelC/obj/Debug/net7.0/ref/tl2-tp4-2023-VelizMiguelC.dll
 /Users/miguelvelizc/TallerDeLenguajes2/tl2-tp4-2023-VelizMiguelC/bin/Debug/net7.0/Cadeteria.json
 /Users/miguelvelizc/TallerDeLenguajes2/tl2-tp4-2023-VelizMiguelC/bin/Debug/net7.0/Cadetes.json
-/Users/miguelvelizc/TallerDeLenguajes2/tl2-tp4-2023-VelizMiguelC/bin/Debug/net7.0/Pedido.json
+/Users/miguelvelizc/TallerDeLenguajes2/tl2-tp4-2023-VelizMiguelC/bin/Debug/net7.0/Pedidos.json

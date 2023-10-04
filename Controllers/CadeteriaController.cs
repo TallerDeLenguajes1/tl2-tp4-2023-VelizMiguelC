@@ -1,4 +1,3 @@
-using EspacioDeArchivos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using tl2_tp4_2023_VelizMiguelC;
@@ -23,18 +22,18 @@ public class CadeteriaController : ControllerBase
     [HttpGet]
     [Route("Pedidos")]
     public ActionResult <string> GetPedidos(){
-        return Ok(cadeteria.Pedidos);
+        return Ok(cadeteria.GetPedidos());
     }
     [HttpGet]
     [Route("Cadetes")]
     public ActionResult <string> GetCadetes(){
-        return Ok(cadeteria.Cadetes);
+        return Ok(cadeteria.GetCadetes());
     }
     [HttpGet]
     [Route("Informe")]
 
     public ActionResult <string> GetInforme(){
-        var informe =new Informe(cadeteria.Cadetes,cadeteria.Pedidos);
+        var informe =new Informe(cadeteria.GetCadetes(),cadeteria.GetPedidos());
         return Ok(informe);
     }
     [HttpPost("addPedido")]

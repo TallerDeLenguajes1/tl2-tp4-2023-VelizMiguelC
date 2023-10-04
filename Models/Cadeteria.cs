@@ -47,20 +47,28 @@ public class Cadeteria{
         var ped = accesoADatosPedidos.Obetener();
         return new Informe(cad,ped);
     }   
+    public List<Pedido> GetPedidos(){
+        return accesoADatosPedidos.Obetener();
+    }
+    public List<Cadete> GetCadetes(){
+        return accesoADatosCadetes.Obetener();
+    }
     public Pedido TomarPedido(string nombre, string direccion, long telefono, string datosRef,  string observacion) {
         var cliente = new Cliente(nombre, direccion, telefono,datosRef);
-        var pedido = new Pedido(accesoADatosPedidos.Obetener().Count(),observacion,cliente);
-        var ped = accesoADatosPedidos.Obetener();
-        ped.Add(pedido);
-        accesoADatosPedidos.GuardarPedido(ped);
+        var pedidos = accesoADatosPedidos.Obetener() ?? new List<Pedido>();
+        var pedido = new Pedido(pedidos.Count, observacion, cliente);
+        pedidos.Add(pedido);
+        accesoADatosPedidos.GuardarPedido(pedidos);
         return pedido;
     }
     public Pedido AsignarPedido(int idPedido,int idCadete){
-        var ped = ObtenerPedido(idPedido);
+        var pedidos = accesoADatosPedidos.Obetener();
+        var ped = pedidos.FirstOrDefault(p => p.Numero == idPedido);
         var cad= ObtenerCadete(idCadete);
         if (ped != null && cad != null)
         {
             ped.IdCadete=idCadete;
+            accesoADatosPedidos.GuardarPedido(pedidos);
         }
         return ped;
     }
@@ -69,6 +77,7 @@ public class Cadeteria{
         var Pedido = Pedidos.FirstOrDefault(p=>p.Numero == NumeroPedido);
         if(Pedido != null){
             Pedido.IdCadete=id;
+            accesoADatosPedidos.GuardarPedido(Pedidos);
             return true;
         }
         return false;
@@ -109,10 +118,13 @@ public class Cadeteria{
         return cad;
     }
     public bool CambiarEstadoPedido(int idPedido,int Op){
-        var ped = ObtenerPedido(idPedido);
+        var pedidos = accesoADatosPedidos.Obetener();
+        var ped = pedidos.FirstOrDefault(p => p.Numero == idPedido);
+        //var ped = ObtenerPedido(idPedido);
         if (ped != null)
         {
             ped.CambiarEstadoPedido(Op);
+            accesoADatosPedidos.GuardarPedido(pedidos);
             return true;
         }
         return false;
