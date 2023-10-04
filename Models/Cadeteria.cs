@@ -1,6 +1,5 @@
 namespace tl2_tp4_2023_VelizMiguelC;
 using System.Linq;
-using EspacioDeArchivos;
 using Microsoft.VisualBasic;
 
 public enum Estado{
@@ -11,22 +10,17 @@ public enum Estado{
 public class Cadeteria{
     private string nombre;
     private long telefono;
-    private List<Cadete> cadetes;
-    private List<Pedido> pedidos;
     private static Cadeteria instance;
+    private AccesoADatosCadeteria accesoADatosCadeteria;
+    private AccesoADatosCadetes accesoADatosCadetes;
+    private AccesoADatosPedidos accesoADatosPedidos;
     private Cadeteria()
     {
         // Inicializa las propiedades si es necesario.
-        nombre = "Mi Cadetería";
-        telefono = 0;
-        // cadetes = new List<Cadete>();
-        // pedidos = new List<Pedido>();
-        // Cadetes.Add(new Cadete(1,"Ramiro","BdRS",3814159593));
-        // Cadetes.Add(new Cadete(2,"Miguel","SMdT",3814650223));
-        // Cadetes.Add(new Cadete(3,"Jose","YB",3816312527));
-        // TomarPedido("Juan","SMdT",1234,"casa verde","fragil");
-        // TomarPedido("Guille","SMdT",4321,"reja roja","no fragil");
-        // TomarPedido("Gaby","SMdT",4567,"edificio rosa","fragil");
+        accesoADatosCadeteria = new AccesoADatosCadeteria();
+        accesoADatosCadetes = new AccesoADatosCadetes();
+        accesoADatosPedidos = new AccesoADatosPedidos();
+        instance = accesoADatosCadeteria.Obetener();
     }
         public static Cadeteria Instance
     {
@@ -35,9 +29,7 @@ public class Cadeteria{
             // Crear la instancia Cadeteria si aún no existe.
             if (instance == null)
             {
-                var json = new AccesoJSON();
-                instance = json.LeerCadeteria();
-                instance.cadetes = json.LeerCadetes();
+                instance = new Cadeteria();
             }
             return instance;
         }
@@ -45,22 +37,22 @@ public class Cadeteria{
 
     public string Nombre { get => nombre; set => nombre = value; }
     public long Telefono { get => telefono; set => telefono = value; }
-    public List<Cadete> Cadetes { get => cadetes; set => cadetes = value; }
-    public List<Pedido> Pedidos { get => pedidos; set => pedidos = value; }
     public Cadeteria(string nombre, long telefono)
     {
         Nombre = nombre;
-        Telefono = telefono;
-        Cadetes = new List<Cadete>();
-        Pedidos = new List<Pedido>();
+        Telefono = telefono;    
     }
     public Informe GetInforme(){
-    return new Informe(Cadetes,Pedidos);
+        var cad = accesoADatosCadetes.Obetener();
+        var ped = accesoADatosPedidos.Obetener();
+        return new Informe(cad,ped);
     }   
     public Pedido TomarPedido(string nombre, string direccion, long telefono, string datosRef,  string observacion) {
         var cliente = new Cliente(nombre, direccion, telefono,datosRef);
-        var pedido = new Pedido(Pedidos.Count(),observacion,cliente);
-        Pedidos.Add(pedido);
+        var pedido = new Pedido(accesoADatosPedidos.Obetener().Count(),observacion,cliente);
+        var ped = accesoADatosPedidos.Obetener();
+        ped.Add(pedido);
+        accesoADatosPedidos.GuardarPedido(ped);
         return pedido;
     }
     public Pedido AsignarPedido(int idPedido,int idCadete){
@@ -72,7 +64,8 @@ public class Cadeteria{
         }
         return ped;
     }
-    public bool MoverPedido(int NumeroPedido,int id){
+    public bool MoverPedido(int NumeroPed           ido,int id){
+        var Pedidos = accesoADatosPedidos.Obetener();
         var Pedido = Pedidos.FirstOrDefault(p=>p.Numero == NumeroPedido);
         if(Pedido != null){
             Pedido.IdCadete=id;
@@ -81,10 +74,14 @@ public class Cadeteria{
         return false;
     }
     public float PedPromedioCad(){
-        return Pedidos.Count()/Cadetes.Count();
+        var cad = accesoADatosCadetes.Obetener();
+        var ped = accesoADatosPedidos.Obetener();
+        return ped.Count()/cad.Count();
     }
     public float TotalAPagar(){
         float Total=0;
+        var cadetes = accesoADatosCadetes.Obetener();
+        var Pedidos = accesoADatosPedidos.Obetener();
         foreach (var c in cadetes)
         {
             Total = Total + c.JornalACobrar(Pedidos);
@@ -92,6 +89,8 @@ public class Cadeteria{
         return Total;
     }
     public float JornalACobrar(int idCadete){
+        var cadetes = accesoADatosCadetes.Obetener();
+        var pedidos = accesoADatosPedidos.Obetener();
         var cad = cadetes.FirstOrDefault(c => c.Id==idCadete);
         if (cad != null)
         {
@@ -100,10 +99,12 @@ public class Cadeteria{
         return 0;
     }
     public Pedido ObtenerPedido(int idPedido){
-        var ped = Pedidos.FirstOrDefault(p => p.Numero == idPedido);
+        var pedidos = accesoADatosPedidos.Obetener();
+        var ped = pedidos.FirstOrDefault(p => p.Numero == idPedido);
         return ped;
     }
     public Cadete ObtenerCadete(int idCadete){
+        var Cadetes = accesoADatosCadetes.Obetener();
         var cad = Cadetes.FirstOrDefault(c=>c.Id==idCadete);
         return cad;
     }
